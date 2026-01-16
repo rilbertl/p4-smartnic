@@ -339,6 +339,19 @@ control MyIngress(inout headers hdr,
 		size = 2;
 		default_action = NoAction();
 	}
+	
+	table drop_packet_middleware {
+		key = { hdr.ipv4.srcAddr : exact;
+			hdr.udp.srcPort : exact;
+			hdr.ipv4.dstAddr : exact;
+			hdr.udp.dstPort : exact; }
+		actions = {
+			drop;
+			NoAction;
+		}
+		size = 2;
+		default_action = drop;
+	}
 
 	table espelho_udp_inner {
                 key = { hdr.udp_inner.srcPort : exact;
@@ -420,6 +433,7 @@ control MyEgress(inout headers hdr,
                  inout standard_metadata_t standard_metadata) {
 
 	apply {
+		/*
 		if (standard_metadata.instance_type == (bit<4>) 0x8) { //IE2
 
 			if (meta.clone_flag == 0x1) {
@@ -448,6 +462,7 @@ control MyEgress(inout headers hdr,
 				}
 			}
 		}
+		*/
 	}
 }
 
