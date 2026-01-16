@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sudo /opt/netronome/p4/bin/rtecli tables delete -t ingress::espelho_udp_inner -r capture_webcam
+sudo /opt/netronome/p4/bin/rtecli tables delete -t ingress::espelho_udp_inner -r capture_brio
+sudo /opt/netronome/p4/bin/rtecli tables delete -t ingress::espelho_udp -r capture_webcam
+sudo /opt/netronome/p4/bin/rtecli tables delete -t ingress::espelho_udp -r capture_brio

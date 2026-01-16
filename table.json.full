@@ -1,0 +1,103 @@
+{
+"tables": {
+	"ingress::espelho_udp": {
+		"rules": [
+		{
+			"name": "from_capture_webcam",
+			"match":
+				{ "ipv4.srcAddr" : { "value" : "192.168.56.101" },
+				  "udp.srcPort" : { "value" : "50000" },
+				  "ipv4.dstAddr" : { "value" : "192.168.56.102" },
+				  "udp.dstPort" : { "value" : "2509" }
+				},
+			"action": {
+				"type": "ingress::encaminhaDecapture",
+				"data": {
+					"egressPort": { "value": "v0.2" },
+					"ip_dec1": { "value": "192.168.56.103" },
+					"port_dec1": { "value": "50001" },
+					"mac_dec1": { "value": "01:02:03:04:05:06" },
+					"ip_dec2": { "value": "0.0.0.0" },
+                                        "port_dec2": { "value": "0" },
+                                        "mac_dec2": { "value": "00:00:00:00:00:00" },
+					"ip_dec3": { "value": "0.0.0.0" },
+                                        "port_dec3": { "value": "0" },
+                                        "mac_dec3": { "value": "00:00:00:00:00:00" },
+					"ip_dec4": { "value": "0.0.0.0" },
+                                        "port_dec4": { "value": "0" },
+                                        "mac_dec4": { "value": "00:00:00:00:00:00" }
+				}
+			}
+		}
+		]
+	},
+	"ingress::ipv4_lpm": {
+		"rules": [
+		{
+			"name": "to_capture_vf0_0",
+			"match":
+				{ "ipv4.dstAddr" : { "value" : "192.168.56.101" } },
+			"action": {
+				"type": "ingress::ipv4_forward",
+				"data": {
+					"dstAddr": {
+                      				"value": "00:15:4d:00:00:00"
+			                },
+					"egressPort": {
+						"value": "v0.0"
+					}
+				}
+			}
+		},
+		{
+			"name": "to_mirror_vf0_1",
+			"match":
+				{ "ipv4.dstAddr" : { "value" : "192.168.56.102" } },
+			"action": {
+				"type": "ingress::ipv4_forward",
+				"data": {
+					"dstAddr": {
+                      				"value": "00:15:4d:00:00:01"
+			                },
+					"egressPort": {
+						"value": "v0.1"
+					}
+				}
+			}
+		},
+		{
+			"name": "to_decapture1_vf0_2",
+			"match":
+				{ "ipv4.dstAddr" : { "value" : "192.168.56.103" } },
+			"action": {
+				"type": "ingress::ipv4_forward",
+				"data": {
+					"dstAddr": {
+                      				"value": "00:15:4d:00:00:02"
+			                },
+					"egressPort": {
+						"value": "v0.2"
+					}
+				}
+			}
+		},
+		{
+			"name": "to_decapture2_vf0_2",
+			"match":
+				{ "ipv4.dstAddr" : { "value" : "192.168.56.104" } },
+			"action": {
+				"type": "ingress::ipv4_forward",
+				"data": {
+					"dstAddr": {
+                      				"value": "00:15:4d:00:00:02"
+			                },
+					"egressPort": {
+						"value": "v0.2"
+					}
+				}
+			}
+		}
+		]
+	}
+}
+}

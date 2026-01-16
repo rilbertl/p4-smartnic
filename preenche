@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo /opt/netronome/p4/bin/rtecli config-reload -c table.json

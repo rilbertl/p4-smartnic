@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo /opt/netronome/p4/bin/rtecli design-load -f firmware.nffw -p out/pif_design.json

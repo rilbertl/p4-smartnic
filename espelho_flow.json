@@ -1,0 +1,35 @@
+{
+"tables": {
+	"ingress::espelho_udp": {
+		"rules": [
+		{
+			"name": "from_capture_webcam",
+			"match":
+				{ "ipv4.srcAddr" : { "value" : "192.168.56.101" },
+				  "udp.srcPort" : { "value" : "50000" },
+				  "ipv4.dstAddr" : { "value" : "192.168.56.102" },
+				  "udp.dstPort" : { "value" : "2509" }
+				},
+			"action": {
+				"type": "ingress::encaminhaDecapture",
+				"data": {
+					"egressPort": { "value": "v0.2" },
+					"ip_dec1": { "value": "192.168.56.103" },
+					"port_dec1": { "value": "50001" },
+					"mac_dec1": { "value": "01:02:03:04:05:06" },
+					"ip_dec2": { "value": "0.0.0.0" },
+                                        "port_dec2": { "value": "0" },
+                                        "mac_dec2": { "value": "00:00:00:00:00:00" },
+					"ip_dec3": { "value": "0.0.0.0" },
+                                        "port_dec3": { "value": "0" },
+                                        "mac_dec3": { "value": "00:00:00:00:00:00" },
+					"ip_dec4": { "value": "0.0.0.0" },
+                                        "port_dec4": { "value": "0" },
+                                        "mac_dec4": { "value": "00:00:00:00:00:00" }
+				}
+			}
+		}
+		]
+	}
+}
+}

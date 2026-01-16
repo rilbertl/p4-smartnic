@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo /opt/netronome/p4/bin/nfp4build -e --nfp4c_p4_version 16 --no-debug-info -p out -o firmware.nffw -l lithium -4 middleware.p4

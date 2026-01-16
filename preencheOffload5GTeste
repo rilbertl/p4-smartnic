@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo /opt/netronome/p4/bin/rtecli tables add -t ingress::espelho_udp_inner -r capture_brio -m '{ "udp_inner.srcPort" : { "value" : "38742" }, "ipv4_inner.dstAddr" : { "value" : "192.168.58.102" }, "udp_inner.dstPort" : { "value" : "2509" } }' -a '{ "type": "ingress::encaminhaDecapture_inner", "data": { "egressPort": { "value": "v0.2" }, "dataPort": { "value": "2510" }, "ip_dec1": { "value": "192.168.58.105" }, "port_dec1": { "value": "39697" }, "mac_dec1": { "value": "00:15:4d:00:00:04" }, "ip_dec2": { "value": "192.168.58.106" }, "port_dec2": { "value": "55805" }, "mac_dec2": { "value": "00:15:4d:00:00:05" } } }'

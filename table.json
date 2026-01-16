@@ -1,0 +1,137 @@
+{
+"tables": {
+	"ingress::ipv4_lpm": {
+		"rules": [
+		{
+			"name": "to_capture_vf0_0",
+			"match":
+				{ "ipv4.dstAddr" : { "value" : "192.168.58.101" } },
+			"action": {
+				"type": "ingress::ipv4_forward",
+				"data": {
+					"dstAddr": {
+                      				"value": "00:15:4d:00:00:00"
+			                },
+					"egressPort": {
+						"value": "v0.0"
+					}
+				}
+			}
+		},
+		{
+			"name": "to_mirror_vf0_1",
+			"match":
+				{ "ipv4.dstAddr" : { "value" : "192.168.58.102" } },
+			"action": {
+				"type": "ingress::ipv4_forward",
+				"data": {
+					"dstAddr": {
+                      				"value": "00:15:4d:00:00:01"
+			                },
+					"egressPort": {
+						"value": "v0.1"
+					}
+				}
+			}
+		},
+		{
+			"name": "to_decapture1_vf0_2",
+			"match":
+				{ "ipv4.dstAddr" : { "value" : "192.168.58.103" } },
+			"action": {
+				"type": "ingress::ipv4_forward",
+				"data": {
+					"dstAddr": {
+                      				"value": "00:15:4d:00:00:02"
+			                },
+					"egressPort": {
+						"value": "v0.2"
+					}
+				}
+			}
+		},
+		{
+			"name": "to_decapture2_vf0_2",
+			"match":
+				{ "ipv4.dstAddr" : { "value" : "192.168.58.104" } },
+			"action": {
+				"type": "ingress::ipv4_forward",
+				"data": {
+					"dstAddr": {
+                      				"value": "00:15:4d:00:00:03"
+			                },
+					"egressPort": {
+						"value": "v0.2"
+					}
+				}
+			}
+		},
+		{
+			"name": "to_decapture3_vf0_2",
+			"match":
+				{ "ipv4.dstAddr" : { "value" : "192.168.58.105" } },
+			"action": {
+				"type": "ingress::ipv4_forward",
+				"data": {
+					"dstAddr": {
+                      				"value": "00:15:4d:00:00:04"
+			                },
+					"egressPort": {
+						"value": "v0.2"
+					}
+				}
+			}
+		},
+		{
+			"name": "to_decapture4_vf0_2",
+			"match":
+				{ "ipv4.dstAddr" : { "value" : "192.168.58.106" } },
+			"action": {
+				"type": "ingress::ipv4_forward",
+				"data": {
+					"dstAddr": {
+                      				"value": "00:15:4d:00:00:05"
+			                },
+					"egressPort": {
+						"value": "v0.2"
+					}
+				}
+			}
+		},
+		{
+			"name": "to_physical_gnb_p0",
+			"match":
+				{ "ipv4.dstAddr" : { "value" : "192.168.58.107" } },
+			"action": {
+				"type": "ingress::ipv4_forward",
+				"data": {
+					"dstAddr": {
+                      				"value": "00:15:4d:00:00:06"
+			                },
+					"egressPort": {
+						"value": "p0"
+					}
+				}
+			}
+		},
+		{
+			"name": "to_physical_gnb_p1",
+			"match":
+				{ "ipv4.dstAddr" : { "value" : "192.168.58.108" } },
+			"action": {
+				"type": "ingress::ipv4_forward",
+				"data": {
+					"dstAddr": {
+                      				"value": "00:15:4d:00:00:07"
+			                },
+					"egressPort": {
+						"value": "p1"
+					}
+				}
+			}
+		}
+		]
+	}
+}
+}
+

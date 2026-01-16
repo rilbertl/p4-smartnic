@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#scp vagrant@espelho:/vagrant/espelho/saida.txt /vagrant/code/espelho_flow.txt
+
+echo "Copiando arquivo execOff"
+sudo cp /home/edge5g/VagrantCode/espelho/saida.txt /home/edge5g/SBRC24NetronomeTutorial/Agilio-P4-SmartNIC/src/middleware/execOff
+echo "CHMOD no arquivo"
+sudo chmod +x /home/edge5g/SBRC24NetronomeTutorial/Agilio-P4-SmartNIC/src/middleware/execOff
+echo "Limpando tabelas da SmartNIC"
+sudo /home/edge5g/SBRC24NetronomeTutorial/Agilio-P4-SmartNIC/src/middleware/bypassClear
+echo "Adicionando rotas na SmartNIC"
+sudo /home/edge5g/SBRC24NetronomeTutorial/Agilio-P4-SmartNIC/src/middleware/execOff
+echo "Rota Offload Espelho - Adicionada"
+
+sudo /home/edge5g/SBRC24NetronomeTutorial/Agilio-P4-SmartNIC/src/middleware/verificaTable
