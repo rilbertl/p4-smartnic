@@ -3,3 +3,4 @@
 sudo /opt/netronome/p4/bin/rtecli tables -i 0 list-rules
 sudo /opt/netronome/p4/bin/rtecli tables -i 1 list-rules
 sudo /opt/netronome/p4/bin/rtecli tables -i 2 list-rules
+sudo /opt/netronome/p4/bin/rtecli tables -i 3 list-rules
