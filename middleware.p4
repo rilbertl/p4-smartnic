@@ -154,8 +154,9 @@ parser MyParser(packet_in packet,
 	state parse_ipv4 {
 		packet.extract(hdr.ipv4);
 		transition select(hdr.ipv4.dstAddr) {
-			espelhoIP: parse_transport; //Se IP dst == espelho -> Analisar transporte
-			default: accept;
+			//espelhoIP: parse_transport; //Se IP dst == espelho -> Analisar transporte
+			//default: accept;
+			default: parse_transport;
 		}
 	}
 
@@ -390,12 +391,11 @@ control MyIngress(inout headers hdr,
 			}
 			else if (hdr.udp.isValid()) {
 
-				drop_packet_middleware.apply();
-				/*
 				if (drop_packet_middleware.apply().hit) {
-					drop();	
+					drop();
 				}
-				else*/ if (hdr.gtp.isValid()){
+				// drop_packet_middleware.apply();
+				else if (hdr.gtp.isValid()){
 					if (hdr.ipv4_inner.isValid()){						
 						if (hdr.udp_inner.isValid()){
 
