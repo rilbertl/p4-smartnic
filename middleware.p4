@@ -267,7 +267,11 @@ control MyIngress(inout headers hdr,
 		standard_metadata.egress_spec = egressPort;
 		hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
 	}
-    
+	
+	action change_egress_port(egressSpec_t egressPort) {
+		standard_metadata.egress_spec = egressPort;
+	}
+
 	table ipv4_lpm {
 		key = {
 		    hdr.ipv4.dstAddr: lpm;
@@ -356,6 +360,28 @@ control MyIngress(inout headers hdr,
                 default_action = NoAction();
         }
 
+	table force_egress_port {
+		key = { hdr.ipv4.dstAddr : exact; }
+		actions = {
+			change_egress_port;
+			drop;
+			NoAction;
+		}
+		size = 2;
+		default_action = NoAction();
+	}
+	
+	table force_egress_port_inner {
+		key = { hdr.ipv4_inner.dstAddr : exact; }
+		actions = {
+			change_egress_port;
+			drop;
+			NoAction;
+		}
+		size = 2;
+		default_action = NoAction();
+	}
+
 	apply {
 		if (hdr.ipv4.isValid()) {
 			
@@ -372,15 +398,16 @@ control MyIngress(inout headers hdr,
 				else*/ if (hdr.gtp.isValid()){
 					if (hdr.ipv4_inner.isValid()){						
 						if (hdr.udp_inner.isValid()){
-							if (espelho_udp_inner.apply().hit) {
+
+							if (standard_metadata.instance_type == (bit<4>) 0x1) {
+								force_egress_port_inner.apply();	
+							}
+							else if (espelho_udp_inner.apply().hit) {
 							
 								if (meta.clone_flag_1 == 0x1 && standard_metadata.egress_instance == 0x0) {
 									meta.clone_flag = 0x1;
 									meta.ehTunelGTP = 0x1;	
-									
-									standard_metadata.clone_spec = (1 << 31) | (bit<32>) meta.stored_decapture_inf;
-
-									clone3(CloneType.I2E, 1, meta);
+									clone3(CloneType.I2I, 1, meta);
 								}
 
 								standard_metadata.egress_spec = meta.stored_mirror_inf;
@@ -399,11 +426,13 @@ control MyIngress(inout headers hdr,
 					}
 				}
 				else {
-					if (espelho_udp.apply().hit) {
+					if (standard_metadata.instance_type == (bit<4>) 0x1) {
+						force_egress_port.apply();
+					}
+					else if (espelho_udp.apply().hit) {
 						if (meta.clone_flag_1 == 0x1 && standard_metadata.egress_instance == 0x0) {
 							meta.clone_flag = 0x1;
-							standard_metadata.egress_spec = meta.stored_decapture_inf;
-							clone3(CloneType.I2E, 1, meta);
+							clone3(CloneType.I2I, 1, meta);
 						}
 						standard_metadata.egress_spec = meta.stored_mirror_inf;
 					}
@@ -431,8 +460,8 @@ control MyEgress(inout headers hdr,
                  inout standard_metadata_t standard_metadata) {
 
 	apply {
-		
-		if (standard_metadata.instance_type == (bit<4>) 0x8) { //IE2
+		/*	
+		if (standard_metadata.instance_type == (bit<4>) 0x8 || standard_metadata.instance_type == (bit<4>) 0x1) { //I2E ou I2I
 
 			if (meta.clone_flag == 0x1) {
 				if (meta.ehTunelGTP == 0x1) {
@@ -462,7 +491,7 @@ control MyEgress(inout headers hdr,
 				}
 			}
 		}
-		
+		*/
 	}
 }
 
