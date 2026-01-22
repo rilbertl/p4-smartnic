@@ -400,7 +400,21 @@ control MyIngress(inout headers hdr,
 						if (hdr.udp_inner.isValid()){
 
 							if (standard_metadata.instance_type == (bit<4>) 0x1) {
-								force_egress_port_inner.apply();	
+								if (force_egress_port_inner.apply().hit) {
+									hdr.gtp.setInvalid();
+									hdr.gtp_ext.setInvalid();
+									hdr.pdu_container.setInvalid();
+									hdr.gtp_ext2.setInvalid();
+									hdr.ipv4.setInvalid();
+									hdr.udp.setInvalid();
+
+									hdr.ipv4_inner.srcAddr = espelhoIP;
+									hdr.ipv4_inner.dstAddr = meta.stored_decapture_ip;
+									hdr.ethernet.srcAddr = espelhoMAC;
+									hdr.ethernet.dstAddr = meta.stored_decapture_mac;
+									hdr.udp_inner.srcPort = meta.stored_mirror_port;
+									hdr.udp_inner.dstPort = meta.stored_decapture_port;
+								}	
 							}
 							else if (espelho_udp_inner.apply().hit) {
 							
@@ -427,7 +441,15 @@ control MyIngress(inout headers hdr,
 				}
 				else {
 					if (standard_metadata.instance_type == (bit<4>) 0x1) {
-						force_egress_port.apply();
+						if(force_egress_port.apply().hit) {
+							standard_metadata.egress_spec = meta.stored_decapture_inf;
+							hdr.ipv4.dstAddr = meta.stored_decapture_ip;
+							hdr.ipv4.srcAddr = espelhoIP;
+							hdr.ethernet.srcAddr = espelhoMAC;
+							hdr.ethernet.dstAddr = meta.stored_decapture_mac;
+							hdr.udp.srcPort = meta.stored_mirror_port;
+							hdr.udp.dstPort = meta.stored_decapture_port;
+						}
 					}
 					else if (espelho_udp.apply().hit) {
 						if (meta.clone_flag_1 == 0x1 && standard_metadata.egress_instance == 0x0) {
